@@ -1,11 +1,14 @@
-*class
+*.class
 
-/out
-/target
+**/bin
+**/out
+**/target
 
-.idea/
+# IntelliJ IDEA
+**/.idea
 *.iml
 
+# Eclipse
 .classpath
 .project
-.settings/
+**/.settings
