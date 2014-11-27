@@ -1,0 +1,28 @@
+Task:
+Возьмите https://github.com/hhru/frontik и из этой репы сделайте две:
+        1. Должна содержать только frontik/testing.
+        2. Должна содержать всё кроме frontik/testing.
+ 
+При этом история в #2 не должна содержать frontik/testing, а история в #1 должна содержать только frontik/testing.
+
+Result:
+1.
+git clone git@github.com:hhru/frontik.git
+mv frontik git-frontik-testing 
+cd git-frontik-testing
+git filter-branch --subdirectory-filter frontik/testing -- --all
+git remote set-url origin git@github.com:hhps/git-frontik-testing.git
+git push origin master
+
+2.
+git clone git@github.com:hhru/frontik.git
+mv frontik git-frontik-without-testing
+cd git-frontik-without-testing
+git filter-branch --tree-filter 'rm -rf frontik/testing' HEAD
+git remote set-url origin git@github.com:hhps/git-frontik-without-testing.git
+git push origin master
+
+Repositories:
+https://github.com/hhps/git-frontik-testing
+https://github.com/hhps/git-frontik-without-testing
+

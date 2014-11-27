@@ -1,0 +1,49 @@
+Task:
+Сделать 3 коммита используя низкоуровневые команды:
+ 
+1) Коммит содержищий в себе 1 файл: task3.txt содержащий любой 4х строчний текст - коммит меседж "commit <%username> 1" где <%username> -  ваш ник на github'е
+2) Коммит содержащий в себе 2 файла: task3_new.txt - содержащий 2 строчки любого текста и task3.txt содержащий любой 4х строчний текст (другой нежели в п.1) - коммит меседж "commit <%username> 2"
+3) Коммит содержищий в себе новую дирректорию gittask с файлом task3.txt первой версии - коммит меседж "commit <%username> 3"
+ 
+Result:
+git init git-task3
+cd git-task3
+git remote add origin git@github.com:hhps/git-task3.git
+
+1.
+vim task3.txt
+git hash-object -w task3.txt
+e109f2762685161b002bcadf2312890e4767e293
+git update-index --add task3.txt 
+git write-tree      
+c7ba220adabd7bac202a03592aa5d5f8505c4f9b
+echo "commit idelpivnitskiy 1" | git commit-tree c7ba22
+f8c28e18e4e10f7563bcab2ae252ab6004e683b4
+
+2.
+vim task3_new.txt
+git hash-object -w task3_new.txt 
+e6457a3f2ae5662d42e35b267615948c377fb84d
+echo "Another line1\nAAnother lline2\nAAAnother llline3\nAAAAnother lllline4" | git hash-object -w --stdin
+05b16fc53af9737926d8830a7b3bab6c317b6f16
+git update-index --add task3_new.txt
+git update-index --add --cacheinfo 100644 05b16fc53af9737926d8830a7b3bab6c317b6f16 task3.txt
+git write-tree 
+aff0f69f0c02f90c36f15f5b6a6ab7ce6c2289ad
+echo "commit idelpivnitskiy 2" | git commit-tree aff0f6 -p f8c28e
+27f8288b5882461aa44ccad1850a68569a3abe54
+
+3.
+git read-tree --prefix=gittask c7ba220adabd7bac202a03592aa5d5f8505c4f9b
+git write-tree 
+b9ab072e9d2d398d80578d8b11401443ce9ea4aa
+echo "commit idelpivnitskiy 3" | git commit-tree b9ab07 -p 27f828
+51722a08aaf3816ac4896fa254072ab0e227b825
+
+git update-ref refs/heads/master 51722a
+git log
+git push -u origin master
+
+Repository:
+https://github.com/hhps/git-task3
+

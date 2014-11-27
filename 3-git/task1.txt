@@ -1,0 +1,58 @@
+Task:
+01. create repo (repo A)
+02. repo A: create 1st commit with some files (file A, file B)
+03. repo A: create branch branch1 from master
+04. clone the current repo (repo B)
+05. repo B, branch1: create 2nd commit containing new file (file C)
+06. repo B: push changes to repo A
+07. repo A, branch1: modify line#1 in file C and commit
+08. repo B, branch1: modify line#1 in file C and commit
+09. repo B, branch1: fetch changes from repo A
+10. repo B, branch1: merge in repoA's branch1 (resolve conflict)
+11. repo A: add repoB as new remote
+12. repo A, branch1: merge in repoB's branch1
+
+Result:
+git clone git@github.com:hhps/git-repoA.git
+cd git-repoA
+echo "This is file A" > "file A"
+echo "This is file B" > "file B"
+git add *
+git commit -m "First commit with some files (file A, file B)"
+git checkout -b branch1
+git push origin branch1
+cd ..
+git clone git-repoA git-repoB
+cd git-repoB
+echo "This is file C" > "file C"
+git add file\ C
+git commit -m "Second commit containing new file (file C)"
+git remote add upstream git@github.com:hhps/git-repoA.git
+git push upstream branch1
+git remote remove origin
+git remote add origin git@github.com:hhps/git-repoB.git
+git push origin branch1
+cd ../git-repoA
+git pull origin branch1 
+vim file\ C 
+git add .
+git commit -m "Line#1 in file C was midified in repoA"
+git push origin branch1
+cd ../git-repoB
+vim file\ C 
+git add .
+git commit -m "Line#1 in file C was midified in repoB"
+git fetch upstream
+git merge upstream/branch1 
+vim file\ C
+git add .
+git commit
+cd ../git-repoA
+git remote add upstream git@github.com:hhps/git-repoB.git
+git pull upstream branch1 
+git push origin branch1
+
+Repositories:
+https://github.com/hhps/git-repoA
+https://github.com/hhps/git-repoB
+
