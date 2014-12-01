@@ -1,0 +1,13 @@
+2013-01-18 12:20:21,345 info GET  12345 /resume?id=43&rss=0 200 321.00ms
+2013-01-18 12:20:22,345 info GET  12245 /resume?rss=0&id=43 200 333.00ms
+2013-01-18 12:21:34,002 warn GET 11345 /vacancyerror 500  123.09ms
+2013-01-18 12:22:11,932 error POST 15345 /user 200  444.44ms
+2013-01-18 12:30:21,345 info GET  11345 /resume?id=43&rss=0 200 301.00ms
+2013-01-18 12:30:22,345 info GET  12345 /resume?rss=0&id=1 200 353.00ms
+2013-01-18 12:31:34,002 warn GET 11145 /vacancyerror 500  113.09ms
+2013-01-18 12:32:11,932 error POST 14345 /user 200  344.44ms
+2013-01-18 12:40:21,345 info GET  11145 /resume?id=1&rss=0 200 341.00ms
+2013-01-18 12:40:22,345 info GET  12445 /resume?rss=0&id=43 400 313.00ms
+2013-01-18 12:41:34,002 warn GET 11155 /vacancyerror 500  133.09ms
+2013-01-18 12:42:11,932 error POST 14645 /user 200  324.44ms
+
