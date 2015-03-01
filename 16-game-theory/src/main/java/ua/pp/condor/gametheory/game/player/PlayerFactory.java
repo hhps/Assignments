@@ -5,8 +5,12 @@ public final class PlayerFactory {
     private PlayerFactory() {
     }
 
-    public static Player getPlayer(PlayerType type, boolean isAgressive,
-                                   boolean isOpportunist, double chanceOfForgiveness) {
+    public static Player getPlayer(PlayerParameters parameters) {
+        final PlayerType type = parameters.getType();
+        final boolean isAgressive = parameters.isAgressive();
+        final boolean isOpportunist = parameters.isOpportunist();
+        final double chanceOfForgiveness = parameters.getChanceOfForgiveness();
+
         switch (type) {
             case COOPERATOR:
                 return new Cooperator();
