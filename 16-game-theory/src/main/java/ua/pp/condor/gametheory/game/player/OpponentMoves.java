@@ -19,6 +19,11 @@ class OpponentMoves {
         return cooperationCount;
     }
 
+    void clear() {
+        count = 0;
+        cooperationCount = 0;
+    }
+
     void add(boolean move) {
         count++;
         if (move) {

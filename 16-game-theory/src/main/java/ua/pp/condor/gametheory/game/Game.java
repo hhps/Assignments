@@ -47,8 +47,8 @@ public class Game {
         int gameScore = 0;
         for (int i = 0; i < numberOfRounds; i++) {
             int score = playRound(isOneOfTheLatestMoves(i));
-            scores.add(score);
             gameScore += score;
+            scores.add(gameScore);
         }
         log.info("Game score: {}", gameScore);
         return scores;
