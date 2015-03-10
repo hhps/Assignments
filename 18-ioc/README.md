@@ -18,3 +18,5 @@ Note that you have to run PostgreSQL instance before running the application and
 ```
 ./scripts/prepare-db-as-postgres.sh
 ```
+Default password for `hh_hw_ioc` PostgreSQL user is the same as login (`hh_hw_ioc`). If you prefer you own password
+you should also change it in `./src/main/resources/db.properties`.
