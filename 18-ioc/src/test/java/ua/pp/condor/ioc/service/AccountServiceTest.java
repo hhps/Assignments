@@ -26,6 +26,7 @@ public class AccountServiceTest {
 
     private static final String ACCOUNT_TABLE = "account";
 
+    @Inject
     private IAccountService accountService;
 
     private JdbcTemplate jdbcTemplate;
