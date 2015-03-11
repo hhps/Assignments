@@ -11,7 +11,6 @@ import ua.pp.condor.ioc.service.exception.NoSuchEntityException;
 import ua.pp.condor.ioc.service.exception.NotEnoughMoneyException;
 
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -40,11 +39,13 @@ public class AccountService implements IAccountService {
         return accountDAO.save(account);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public AccountEntity findById(int accountId) {
         return accountDAO.findById(accountId, false);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AccountEntity> findAll() {
         return accountDAO.findAll();
@@ -73,12 +74,12 @@ public class AccountService implements IAccountService {
         if (amount <= 0) {
             throw new IllegalArgumentException("amount");
         }
-        AccountEntity account = new AccountEntity("Joe Shmoe"); //FIXME remove
-        if (accountId < 0) {    //FIXME incorrect check
+        AccountEntity account = accountDAO.findById(accountId, true);
+        if (account == null) {
             throw new NoSuchEntityException(accountId);
         }
-        account.setBalance(amount);
-        return account;
+        account.setBalance(account.getBalance() + amount);
+        return accountDAO.save(account);
     }
 
     @Override
@@ -86,15 +87,14 @@ public class AccountService implements IAccountService {
         if (amount <= 0) {
             throw new IllegalArgumentException("amount");
         }
-        AccountEntity account = new AccountEntity("Joe Shmoe", 500); //FIXME remove
-        if (accountId < 0) {    //FIXME incorrect check
+        AccountEntity account = accountDAO.findById(accountId, true);
+        if (account == null) {
             throw new NoSuchEntityException(accountId);
         }
         if (account.getBalance() < amount) {
             throw new NotEnoughMoneyException(account.toString());
         }
-        //TODO Auto-generated method stub
         account.setBalance(account.getBalance() - amount);
-        return account;
+        return accountDAO.save(account);
     }
 }

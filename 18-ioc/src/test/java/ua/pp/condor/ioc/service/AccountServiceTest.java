@@ -167,8 +167,12 @@ public class AccountServiceTest {
         account = accountService.save(account);
         assertEquals(0.0, account.getBalance(), 0.001);
 
-        account = accountService.income(account.getId(), 100);
-        assertEquals(100, account.getBalance(), 0.001);
+        final double amount = 100;
+        account = accountService.income(account.getId(), amount);
+        assertEquals(amount, account.getBalance(), 0.001);
+
+        account = accountService.income(account.getId(), amount);
+        assertEquals(amount * 2, account.getBalance(), 0.001);
     }
 
     @Test(expected = IllegalArgumentException.class)
