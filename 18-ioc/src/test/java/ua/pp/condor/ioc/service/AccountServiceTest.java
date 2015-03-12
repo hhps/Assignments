@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = TestConfiguration.class)
 public class AccountServiceTest {
 
-    private static final String ACCOUNT_TABLE = "account";
+    static final String ACCOUNT_TABLE = "account";
 
     @Inject
     private IAccountService accountService;
