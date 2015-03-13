@@ -7,7 +7,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import ua.pp.condor.ioc.config.ProdConfiguration;
 import ua.pp.condor.ioc.entity.AccountEntity;
 import ua.pp.condor.ioc.entity.TransactionEntity;
-import ua.pp.condor.ioc.repository.ITransactionDAO;
 import ua.pp.condor.ioc.service.IAccountService;
 import ua.pp.condor.ioc.service.ITransactionService;
 

@@ -16,7 +16,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackages = {"ua.pp.condor.ioc.service", "ua.pp.condor.ioc.repository"})
 @EnableTransactionManagement
-public class ApplicationConfiguration {
+class ApplicationConfiguration {
 
     @Inject
     private Environment env;

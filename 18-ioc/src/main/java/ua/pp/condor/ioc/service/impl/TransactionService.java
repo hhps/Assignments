@@ -53,10 +53,10 @@ public class TransactionService implements ITransactionService {
             throw new IllegalEntityStateException("amount can not be less than 0 or equals to 0");
         }
         if (transaction.getCreationTime() != null) {
-            throw new IllegalEntityStateException("creation_time cat not be setted");
+            throw new IllegalEntityStateException("creation_time cat not be set");
         }
 
-        final double amount = transaction.getAmount().doubleValue();
+        final double amount = transaction.getAmount();
         accountService.loss(transaction.getAccountFrom(), amount);
         try {
             transaction.setCreationTime(new Date());

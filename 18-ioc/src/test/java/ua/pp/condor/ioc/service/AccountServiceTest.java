@@ -221,7 +221,7 @@ public class AccountServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testLossNagative() {
+    public void testLossNegative() {
         AccountEntity account = new AccountEntity("Joe Shmoe");
         account = accountService.save(account);
         accountService.loss(account.getId(), -100);
