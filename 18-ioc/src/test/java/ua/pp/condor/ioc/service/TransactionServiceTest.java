@@ -27,6 +27,7 @@ public class TransactionServiceTest {
 
     static final String TRANSACTION_TABLE = "transaction";
 
+    @Inject
     private ITransactionService transactionService;
 
     @Inject
