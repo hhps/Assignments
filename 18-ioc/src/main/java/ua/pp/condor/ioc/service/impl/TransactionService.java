@@ -1,5 +1,7 @@
 package ua.pp.condor.ioc.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,8 @@ import static java.util.Objects.requireNonNull;
 @Transactional
 public class TransactionService implements ITransactionService {
 
+    private static final Logger log = LoggerFactory.getLogger(TransactionService.class);
+
     @Inject
     private ITransactionDAO transactionDAO;
 
@@ -29,6 +33,7 @@ public class TransactionService implements ITransactionService {
     @Override
     public TransactionEntity save(TransactionEntity transaction) {
         requireNonNull(transaction, "transaction");
+        log.debug("Before: {}", transaction);
         if (transaction.getId() != null) {
             throw new IllegalEntityStateException("can not save entity which has already generated ID: " + transaction);
         }
@@ -61,13 +66,16 @@ public class TransactionService implements ITransactionService {
             transaction.setCreationTime(null);
             throw new NoSuchEntityException(e);
         }
+        log.debug("After: {}", transaction);
         return transaction;
     }
 
     @Transactional(readOnly = true)
     @Override
     public TransactionEntity findById(long transactionId) {
-        return transactionDAO.findById(transactionId, false);
+        TransactionEntity transaction = transactionDAO.findById(transactionId, false);
+        log.debug("Found transaction for id = {}: {}", transactionId, transaction);
+        return transaction;
     }
 
     @Transactional(readOnly = true)
@@ -78,6 +86,8 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public boolean delete(long transactionId) {
-        return transactionDAO.delete(transactionId);
+        boolean isDeleted = transactionDAO.delete(transactionId);
+        log.debug("Deleted transaction for id = {}: {}", transactionId, isDeleted);
+        return isDeleted;
     }
 }

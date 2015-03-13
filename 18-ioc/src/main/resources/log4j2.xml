@@ -2,11 +2,14 @@
 <configuration>
   <appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS dd.MM.yyyy} %-5level %c - %msg%n" />
+      <PatternLayout pattern="%d{HH:mm:ss.SSS dd.MM.yyyy} %-5level %c.%M() - %msg%n" />
     </Console>
   </appenders>
   <Loggers>
-    <Root level="debug">
+    <Logger name="ua.pp.condor" level="trace" additivity="false">
+      <AppenderRef ref="Console" />
+    </Logger>
+    <Root level="info">
       <AppenderRef ref="Console" />
     </Root>
   </Loggers>
