@@ -1,5 +1,6 @@
 package ua.pp.condor.ioc.service.impl;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.pp.condor.ioc.entity.TransactionEntity;
@@ -7,6 +8,7 @@ import ua.pp.condor.ioc.repository.ITransactionDAO;
 import ua.pp.condor.ioc.service.IAccountService;
 import ua.pp.condor.ioc.service.ITransactionService;
 import ua.pp.condor.ioc.service.exception.IllegalEntityStateException;
+import ua.pp.condor.ioc.service.exception.NoSuchEntityException;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -51,9 +53,14 @@ public class TransactionService implements ITransactionService {
 
         final double amount = transaction.getAmount().doubleValue();
         accountService.loss(transaction.getAccountFrom(), amount);
-        transaction.setCreationTime(new Date());
-        transaction = transactionDAO.save(transaction);
-        accountService.income(transaction.getAccountTo(), amount);
+        try {
+            transaction.setCreationTime(new Date());
+            transaction = transactionDAO.save(transaction);
+            accountService.income(transaction.getAccountTo(), amount);
+        } catch (DataIntegrityViolationException e) {
+            transaction.setCreationTime(null);
+            throw new NoSuchEntityException(e);
+        }
         return transaction;
     }
 

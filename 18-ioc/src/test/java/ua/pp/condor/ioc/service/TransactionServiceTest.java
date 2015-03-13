@@ -10,6 +10,8 @@ import ua.pp.condor.ioc.config.TestConfiguration;
 import ua.pp.condor.ioc.entity.AccountEntity;
 import ua.pp.condor.ioc.entity.TransactionEntity;
 import ua.pp.condor.ioc.service.exception.IllegalEntityStateException;
+import ua.pp.condor.ioc.service.exception.NoSuchEntityException;
+import ua.pp.condor.ioc.service.exception.NotEnoughMoneyException;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -183,5 +185,52 @@ public class TransactionServiceTest {
 
         deleteResult = transactionService.delete(-1);
         assertFalse(deleteResult);
+    }
+
+    @Test
+    public void testTransactionRollbackNotEnoughMoney() {
+        AccountEntity account1 = new AccountEntity("Joe Shmoe", 0);
+        account1 = accountService.save(account1);
+        AccountEntity account2 = new AccountEntity("John Doe", 0);
+        account2 = accountService.save(account2);
+
+        TransactionEntity transaction = new TransactionEntity(account1.getId(), account2.getId(), 100.0);
+        final int countBeforeSave = JdbcTestUtils.countRowsInTable(jdbcTemplate, TRANSACTION_TABLE);
+
+        try {
+            transaction = transactionService.save(transaction);
+        } catch (NotEnoughMoneyException e) {}
+        final int countAfterSave = JdbcTestUtils.countRowsInTable(jdbcTemplate, TRANSACTION_TABLE);
+
+        assertNull(transaction.getId());
+        assertNull(transaction.getCreationTime());
+        assertEquals(countBeforeSave, countAfterSave);
+
+        account1 = accountService.findById(account1.getId());
+        account2 = accountService.findById(account2.getId());
+        assertEquals(0, account1.getBalance(), 0.001);
+        assertEquals(0, account2.getBalance(), 0.001);
+    }
+
+    @Test
+    public void testTransactionRollbackNoSuchEntity() {
+        AccountEntity account1 = new AccountEntity("Joe Shmoe", 1000);
+        account1 = accountService.save(account1);
+        Integer incorrectIdForAccount2 = -1;
+
+        TransactionEntity transaction = new TransactionEntity(account1.getId(), incorrectIdForAccount2, 100.0);
+        final int countBeforeSave = JdbcTestUtils.countRowsInTable(jdbcTemplate, TRANSACTION_TABLE);
+
+        try {
+            transaction = transactionService.save(transaction);
+        } catch (NoSuchEntityException e) {}
+        final int countAfterSave = JdbcTestUtils.countRowsInTable(jdbcTemplate, TRANSACTION_TABLE);
+
+        assertNull(transaction.getId());
+        assertNull(transaction.getCreationTime());
+        assertEquals(countBeforeSave, countAfterSave);
+
+        account1 = accountService.findById(account1.getId());
+        assertEquals(1000, account1.getBalance(), 0.001);
     }
 }
