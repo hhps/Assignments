@@ -71,7 +71,7 @@ public class TransactionDAO implements ITransactionDAO {
     }
 
     @Override
-    public TransactionEntity findById(long transactionId, boolean lock) {
+    public TransactionEntity findById(Long transactionId, boolean lock) {
         try {
             return jdbcTemplate.queryForObject(FIND_BY_ID_QUERY, new Object[]{transactionId}, ROW_MAPPER);
         } catch (EmptyResultDataAccessException e) {
@@ -85,7 +85,7 @@ public class TransactionDAO implements ITransactionDAO {
     }
 
     @Override
-    public boolean delete(long transactionId) {
+    public boolean delete(Long transactionId) {
         int deleted = jdbcTemplate.update(DELETE_QUERY, transactionId);
         return deleted == 1;
     }

@@ -27,7 +27,7 @@ public class AccountDAO implements IAccountDAO {
     }
 
     @Override
-    public AccountEntity findById(int accountId, boolean lock) {
+    public AccountEntity findById(Integer accountId, boolean lock) {
         return (AccountEntity) getSession()
                 .get(AccountEntity.class, accountId, lock ? LockOptions.UPGRADE : LockOptions.NONE);
     }
@@ -41,7 +41,7 @@ public class AccountDAO implements IAccountDAO {
     }
 
     @Override
-    public boolean delete(int accountId) {
+    public boolean delete(Integer accountId) {
         int deleted = getSession()
                 .createQuery("DELETE AccountEntity WHERE id = :id")
                 .setInteger("id", accountId)
